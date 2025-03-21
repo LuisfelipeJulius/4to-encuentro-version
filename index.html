@@ -264,6 +264,7 @@
       tabindex="-1"
       aria-labelledby="terminosModalLabel"
       aria-hidden="true"
+      target="_parent"
     >
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -456,7 +457,7 @@
                         }
                     });
                     // Redirigir a la página de registro exitoso
-                    window.location.href = 'https://www.finca.co/registro-exitoso';
+                   window.top.location.href  = 'https://www.finca.co/registro-exitoso';
                 } else {
                     // Mostrar mensaje de error
                     document.getElementById('errorMessage').classList.remove('d-none');
@@ -470,35 +471,34 @@
     });
 
 
-          // Para abrir popups desde el iframe
+
+// Función para abrir un popup en la ventana principal
 function openPopupInParentWindow(url) {
-  // Envía mensaje a la página principal
-  window.parent.postMessage({
-    action: 'openPopup',
-    url: url
-  }, '*');
+  try {
+    window.parent.postMessage({
+      action: 'openPopup',
+      url: url
+    }, '*');
+    console.log('Mensaje de popup enviado a la ventana principal');
+  } catch (e) {
+    console.error('Error al enviar mensaje:', e);
+  }
 }
 
-// Para redirecciones desde el iframe
-function redirectInParentWindow(url) {
-  // Envía mensaje a la página principal
-  window.parent.postMessage({
-    action: 'redirect',
-    url: url
-  }, '*');
-}
+// Interceptar TODOS los enlaces para que se abran en la ventana principal
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('a');
+  if (target && target.getAttribute('href')) {
+    e.preventDefault();
+    const href = target.getAttribute('href');
+    redirectParentWindow(href);
+  }
+}, true);
 
-// Luego, reemplaza tus eventos normales:
-// Ejemplo: en vez de window.open() o location.href = ""
-document.getElementById("popupTrigger").addEventListener("click", function() {
-  openPopupInParentWindow('tu-url-del-popup.html');
-});
 
-// Para botones o enlaces que redirijan
-document.getElementById("tuBotonDeRedireccion").addEventListener("click", function(e) {
-  e.preventDefault();
-  redirectInParentWindow('tu-url-de-redireccion.html');
-});
+
+
+
     </script>
   </body>
 </html>
