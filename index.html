@@ -472,28 +472,6 @@
 
 
 
-// Función para abrir un popup en la ventana principal
-function openPopupInParentWindow(url) {
-  try {
-    window.parent.postMessage({
-      action: 'openPopup',
-      url: url
-    }, '*');
-    console.log('Mensaje de popup enviado a la ventana principal');
-  } catch (e) {
-    console.error('Error al enviar mensaje:', e);
-  }
-}
-
-// Interceptar TODOS los enlaces para que se abran en la ventana principal
-document.addEventListener('click', function(e) {
-  const target = e.target.closest('a');
-  if (target && target.getAttribute('href')) {
-    e.preventDefault();
-    const href = target.getAttribute('href');
-    redirectParentWindow(href);
-  }
-}, true);
 
 
 
