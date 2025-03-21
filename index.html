@@ -469,6 +469,19 @@
         }
     });
 
+
+           // Código para el botón de popup en tu página de GitHub
+      document.getElementById("popupTrigger").addEventListener("click", function() {
+        // Envía un mensaje al sitio padre
+        window.parent.postMessage({ action: 'showPopup' }, '*');
+      });
+      
+      // Para redirecciones, antes de redirigir
+      function redirigir(url) {
+        window.parent.postMessage({ action: 'redirect', url: url }, '*');
+        return false; // Para prevenir la redirección dentro del iframe
+      }
+
     // Evento para quitar la clase is-invalid al cambiar el valor
     document.querySelectorAll('#formularioRegistro input, #formularioRegistro select').forEach(input => {
         input.addEventListener('input', function() {
