@@ -470,24 +470,34 @@
     });
 
 
-           // Código para el botón de popup en tu página de GitHub
-      document.getElementById("popupTrigger").addEventListener("click", function() {
-        // Envía un mensaje al sitio padre
-        window.parent.postMessage({ action: 'showPopup' }, '*');
-      });
-      
-      // Para redirecciones, antes de redirigir
-      function redirigir(url) {
-        window.parent.postMessage({ action: 'redirect', url: url }, '*');
-        return false; // Para prevenir la redirección dentro del iframe
-      }
+          // Para abrir popups desde el iframe
+function openPopupInParentWindow(url) {
+  // Envía mensaje a la página principal
+  window.parent.postMessage({
+    action: 'openPopup',
+    url: url
+  }, '*');
+}
 
-    // Evento para quitar la clase is-invalid al cambiar el valor
-    document.querySelectorAll('#formularioRegistro input, #formularioRegistro select').forEach(input => {
-        input.addEventListener('input', function() {
-            this.classList.remove('is-invalid');
-        });
-    });
+// Para redirecciones desde el iframe
+function redirectInParentWindow(url) {
+  // Envía mensaje a la página principal
+  window.parent.postMessage({
+    action: 'redirect',
+    url: url
+  }, '*');
+}
+
+// Luego, reemplaza tus eventos normales:
+// Ejemplo: en vez de window.open() o location.href = ""
+document.getElementById("popupTrigger").addEventListener("click", function() {
+  openPopupInParentWindow('tu-url-del-popup.html');
+});
+
+// Para botones o enlaces que redirijan
+document.getElementById("tuBotonDeRedireccion").addEventListener("click", function(e) {
+  e.preventDefault();
+  redirectInParentWindow('tu-url-de-redireccion.html');
 });
     </script>
   </body>
